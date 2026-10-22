@@ -35,8 +35,9 @@ trigger:
 condition:
   - condition: template
     value_template: >-
-      {% set sensor_state = states(!input library_sensor!) %}
-      {% if sensor_state not in ['unavailable', 'unknown', 'none'] and sensor_state %}
+      {% set sensor_id = !input library_sensor %}
+      {% set sensor_state = states(sensor_id) %}
+      {% if sensor_state not in ['unavailable', 'unknown', 'none', ''] %}
         {% set due = sensor_state | as_datetime %}
         {% if due %}
           {% set days = ((due - now()).days) | int %}
@@ -54,4 +55,5 @@ action:
     data:
       title: "Stadtbibliothek Wiesbaden"
       message: >-
-        Deine ausgeliehenen Medien der Stadtbibliothek Wiesbaden müssen in {{ !input days_before! }} Tagen (am {{ states(!input library_sensor!) }}) zurückgegeben werden!
+        {% set sensor_id = !input library_sensor %}
+        Deine ausgeliehenen Medien der Stadtbibliothek Wiesbaden müssen in {{ !input days_before! }} Tagen (am {{ states(sensor_id) }}) zurückgegeben werden!
