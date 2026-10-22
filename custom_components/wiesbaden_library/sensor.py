@@ -1,7 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import logging
 from bs4 import BeautifulSoup
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorEntity, SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -94,17 +94,18 @@ def fetch_library_data(ausweis, pwd):
               "branch": branch,
           })
 
-    next_due_iso = "unknown"
+    next_due_date = None
     branches_list = []
     if loans:
       sorted_loans = sorted(
           loans, key=lambda x: datetime.strptime(x["due_date"], "%d.%m.%Y")
       )
-      next_due_iso = sorted_loans[0]["due_date_iso"]
+      # Wir speichern ein echtes date-Objekt für den Native Value (wichtig für device_class: date)
+      next_due_date = datetime.strptime(sorted_loans[0]["due_date"], "%d.%m.%Y").date()
       branches_list = sorted(list(set(b["branch"] for b in loans if b["branch"])))
 
     return {
-        "state": next_due_iso,
+        "state": next_due_date,
         "branches": branches_list,
         "total_books": len(loans),
         "books": loans,
@@ -123,7 +124,7 @@ class WiesbadenLibrarySensor(CoordinatorEntity, SensorEntity):
     self._attr_name = "Nächste Rückgabe"
     self._attr_unique_id = f"{entry.entry_id}_next_due"
     self._attr_icon = "mdi:bookshelf"
-    self._attr_device_class = "date"
+    self._attr_device_class = SensorDeviceClass.DATE
 
   @property
   def device_info(self):
@@ -144,6 +145,7 @@ class WiesbadenLibrarySensor(CoordinatorEntity, SensorEntity):
   @property
   def extra_state_attributes(self):
     if self.coordinator.data:
+      # Für Attribute können wir die ISO-Strings beibehalten, das stört Home Assistant nicht
       return {
           "branches": self.coordinator.data.get("branches"),
           "total_books": self.coordinator.data.get("total_books"),
