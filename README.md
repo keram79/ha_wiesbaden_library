@@ -1,7 +1,7 @@
 # Stadtbibliothek Wiesbaden Integration für Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/keram79/ha_wiesbaden_library)
-[![GitHub Release](https://img.shields.io/github/v/release/keram79/ha_wiesbaden_library)](https://github.com/keram79/ha_wiesbaden_library/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/keram79/ha_wiesbaden_library?include_prereleases)](https://github.com/keram79/ha_wiesbaden_library/releases/latest)
 
 Eine Home-Assistant-Integration zum automatisierten Abrufen der ausgeliehenen Medien und Rückgabefristen der **Stadtbibliothek Wiesbaden** (`bond.wiesbaden.de`).
 
