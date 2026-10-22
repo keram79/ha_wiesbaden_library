@@ -1,0 +1,48 @@
+blueprint:
+  name: "Stadtbibliothek Wiesbaden: Erinnerung an Rückgabe"
+  description: "Erinnert vor Ablauf der Leihfrist der Stadtbibliothek Wiesbaden an die Rückgabe der Medien."
+  domain: automation
+  input:
+    library_sensor:
+      name: Bibliotheks-Sensor
+      description: "Der Sensor deiner Stadtbibliothek Wiesbaden."
+      selector:
+        entity:
+          integration: wiesbaden_library
+          domain: sensor
+    days_before:
+      name: Tage vorher
+      description: "Wie viele Tage vor dem Rückgabedatum soll erinnert werden?"
+      default: 2
+      selector:
+        number:
+          min: 1
+          max: 7
+          step: 1
+          unit_of_measurement: Tage
+    notify_target:
+      name: Benachrichtigungsziel
+      description: "Wähle den Benachrichtigungsdienst oder das Gerät aus (z.B. notify.mobile_app_... oder persistent_notification)."
+      selector:
+        target:
+          entity:
+            domain: notify
+
+trigger:
+  - platform: template
+    value_template: >-
+      {{ as_timestamp(states('!input library_sensor')) - as_timestamp(now()) <= !input days_before * 86400 }}
+
+condition:
+  - condition: template
+    value_template: "{{ states('!input library_sensor') not in ['unknown', 'unavailable'] }}"
+
+action:
+  - service: !input notify_target
+    data:
+      title: "Stadtbibliothek Wiesbaden"
+      message: >-
+        Deine geliehenen Bücher müssen am {{ states('!input library_sensor') }} zurückgegeben werden! 
+        Es sind insgesamt {{ state_attr('!input library_sensor', 'total_books') }} Medien in folgenden Zweigstellen ausgeliehen: {{ state_attr('!input library_sensor', 'branches') | join(', ') }}.
+
+mode: single
