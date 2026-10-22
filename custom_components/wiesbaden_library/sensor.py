@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 from bs4 import BeautifulSoup
 from homeassistant.components.sensor import SensorEntity
@@ -34,7 +34,7 @@ async def async_setup_entry(
       _LOGGER,
       name="wiesbaden_library_coordinator",
       update_method=async_update_data,
-      update_interval=timedelta(hours=6),  # Alle 6 Stunden aktualisieren
+      update_interval=timedelta(hours=6),
   )
 
   await coordinator.async_config_entry_first_refresh()
@@ -89,7 +89,7 @@ def fetch_library_data(ausweis, pwd):
           loans.append({
               "author": author,
               "title": title,
-              "due_date": due_date_str := due_date_raw,
+              "due_date": due_date_raw,
               "due_date_iso": iso_date,
               "branch": branch,
           })
