@@ -39,8 +39,8 @@ condition:
       {% set target_days = !input days_before %}
       {% set sensor_state = states(sensor_id) %}
       {% if sensor_state not in ['unavailable', 'unknown', 'none', ''] %}
-        {% set due = sensor_state | as_datetime %}
-        {% if due %}
+        {% set due = sensor_state | as_datetime(none) %}
+        {% if due != none %}
           {% set days = ((due - now()).days) | int %}
           {{ days == target_days }}
         {% else %}
