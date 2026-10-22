@@ -1,12 +1,7 @@
 # Stadtbibliothek Wiesbaden Integration für Home Assistant
 
-<<<<<<< HEAD
-[![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/v/release/dein-github-name/ha-wiesbaden-library)](https://github.com/dein-github-name/ha-wiesbaden-library/releases)
-=======
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/keram79/ha_wiesbaden_library)
 [![GitHub Release](https://img.shields.io/github/v/release/keram79/ha_wiesbaden_library)](https://github.com/keram79/ha_wiesbaden_library/releases)
->>>>>>> 5af1371 (Initiale Version der Stadtbibliothek Wiesbaden HACS Integration)
 
 Eine Home-Assistant-Integration zum automatisierten Abrufen der ausgeliehenen Medien und Rückgabefristen der **Stadtbibliothek Wiesbaden** (`bond.wiesbaden.de`).
 
@@ -27,17 +22,10 @@ Eine Home-Assistant-Integration zum automatisierten Abrufen der ausgeliehenen Me
 ## Installation via HACS (Empfohlen)
 
 1. Stelle sicher, dass du [HACS](https://hacs.xyz/) installiert hast.
-<<<<<<< HEAD
-2. Klicke auf diesen Button oder füge das Repository manuell hinzu:
-   * Gehe in HACS auf **Integrationen**.
-   * Klicke oben rechts auf die drei Punkte und wähle **Benutzerdefiniertes Repository hinzufügen**.
-   * Trage die URL deines Repositories ein und wähle als Kategorie **Integration**.
-=======
 2. Füge dieses Repository als benutzerdefiniertes Repository in HACS hinzu:
    * Gehe in HACS auf **Integrationen**.
    * Klicke oben rechts auf die drei Punkte und wähle **Benutzerdefiniertes Repository hinzufügen**.
    * Trage `https://github.com/keram79/ha_wiesbaden_library` ein und wähle als Kategorie **Integration**.
->>>>>>> 5af1371 (Initiale Version der Stadtbibliothek Wiesbaden HACS Integration)
 3. Suche nach **"Stadtbibliothek Wiesbaden"** und klicke auf **Installieren**.
 4. Starte Home Assistant neu.
 
@@ -51,8 +39,6 @@ Eine Home-Assistant-Integration zum automatisierten Abrufen der ausgeliehenen Me
 
 ---
 
-<<<<<<< HEAD
-=======
 ## Automatisierte Erinnerungen (Blueprint)
 
 Diese Integration enthält direkt einen praktischen Blueprint! 
@@ -62,7 +48,6 @@ Du kannst dir dann mit einem Klick deine persönliche Erinnerung zusammenklicken
 
 ---
 
->>>>>>> 5af1371 (Initiale Version der Stadtbibliothek Wiesbaden HACS Integration)
 ## Verwendung im Dashboard
 
 Du kannst dir alle ausgeliehenen Bücher beispielsweise über eine Markdown-Karte auf deinem Dashboard anzeigen lassen:
