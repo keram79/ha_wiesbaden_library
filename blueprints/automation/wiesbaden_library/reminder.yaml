@@ -54,6 +54,5 @@ action:
     target: !input notify_target
     data:
       title: "Stadtbibliothek Wiesbaden"
-      message: >-
-        {% set sensor_id = !input library_sensor %}
-        Deine ausgeliehenen Medien der Stadtbibliothek Wiesbaden müssen in {{ !input days_before! }} Tagen (am {{ states(sensor_id) }}) zurückgegeben werden!
+      message: >
+        Deine ausgeliehenen Medien der Stadtbibliothek Wiesbaden müssen in {{ !input days_before! }} Tagen (am {{ states(!input library_sensor!) }}) zurückgegeben werden!
