@@ -6,6 +6,6 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/keram79/wiesbaden-library/issues",
   "requirements": ["beautifulsoup4==4.12.3"],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "config_flow": true
 }
