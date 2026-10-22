@@ -38,7 +38,7 @@ async def async_setup_entry(
   )
 
   await coordinator.async_config_entry_first_refresh()
-  async_add_entities([WiesbadenLibrarySensor(coordinator)])
+  async_add_entities([WiesbadenLibrarySensor(coordinator, entry)])
 
 
 def fetch_library_data(ausweis, pwd):
@@ -116,12 +116,24 @@ def fetch_library_data(ausweis, pwd):
 
 class WiesbadenLibrarySensor(CoordinatorEntity, SensorEntity):
 
-  def __init__(self, coordinator):
+  def __init__(self, coordinator, entry: ConfigEntry):
     super().__init__(coordinator)
-    self._attr_name = "Stadtbibliothek Nächste Rückgabe"
-    self._attr_unique_id = "wiesbaden_library_next_due"
+    self._entry = entry
+    self._attr_has_entity_name = True
+    self._attr_name = "Nächste Rückgabe"
+    self._attr_unique_id = f"{entry.entry_id}_next_due"
     self._attr_icon = "mdi:bookshelf"
     self._attr_device_class = "date"
+
+  @property
+  def device_info(self):
+    return {
+        "identifiers": {(DOMAIN, self._entry.entry_id)},
+        "name": f"Stadtbibliothek Wiesbaden ({self._entry.data.get('ausweis')})",
+        "manufacturer": "Stadtbibliothek Wiesbaden",
+        "model": "WebOPAC Integration",
+        "sw_version": "1.0.6",
+    }
 
   @property
   def native_value(self):

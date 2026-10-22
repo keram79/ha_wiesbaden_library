@@ -16,33 +16,42 @@ blueprint:
       default: 2
       selector:
         number:
-          min: 1
+          min: 0
           max: 7
           step: 1
           unit_of_measurement: Tage
     notify_target:
       name: Benachrichtigungsziel
-      description: "Wähle den Benachrichtigungsdienst oder das Gerät aus (z.B. notify.mobile_app_... oder persistent_notification)."
+      description: "Wähle den Benachrichtigungsdienst oder das Gerät aus."
       selector:
         target:
           entity:
             domain: notify
 
 trigger:
-  - platform: template
-    value_template: >-
-      {{ as_timestamp(states('!input library_sensor')) - as_timestamp(now()) <= !input days_before * 86400 }}
+  - platform: time
+    at: "09:00:00"
 
 condition:
   - condition: template
-    value_template: "{{ states('!input library_sensor') not in ['unknown', 'unavailable'] }}"
+    value_template: >-
+      {% set sensor_state = states(!input library_sensor!) %}
+      {% if sensor_state not in ['unavailable', 'unknown', 'none'] and sensor_state %}
+        {% set due = sensor_state | as_datetime %}
+        {% if due %}
+          {% set days = ((due - now()).days) | int %}
+          {{ days == !input days_before! }}
+        {% else %}
+          false
+        {% endif %}
+      {% else %}
+        false
+      {% endif %}
 
 action:
-  - service: !input notify_target
+  - service: notify.send_message
+    target: !input notify_target
     data:
       title: "Stadtbibliothek Wiesbaden"
       message: >-
-        Deine geliehenen Bücher müssen am {{ states('!input library_sensor') }} zurückgegeben werden! 
-        Es sind insgesamt {{ state_attr('!input library_sensor', 'total_books') }} Medien in folgenden Zweigstellen ausgeliehen: {{ state_attr('!input library_sensor', 'branches') | join(', ') }}.
-
-mode: single
+        Deine ausgeliehenen Medien der Stadtbibliothek Wiesbaden müssen in {{ !input days_before! }} Tagen (am {{ states(!input library_sensor!) }}) zurückgegeben werden!
